@@ -10,10 +10,12 @@ import com.alibaba.datax.common.util.RetryUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.TypeReference;
+import com.google.common.collect.Lists;
 import io.searchbox.client.JestResult;
 import io.searchbox.core.Bulk;
 import io.searchbox.core.BulkResult;
 import io.searchbox.core.Index;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -319,22 +321,19 @@ public class ESWriter extends Writer {
                     //如果是数组类型，那它传入的必是字符串类型
                     if (columnList.get(i).isArray() != null && columnList.get(i).isArray()) {
                         String[] dataList = column.asString().split(splitter);
-                        Object[] convertDataList = new Object[dataList.length];
+                        ArrayList<Object> convertDataList = Lists.newArrayList();
                         switch (columnType) {
                             case LONG:
-//                                Long[] longDataList = new Long[]{};
-                                for (int j = 0; j < dataList.length; j++) {
-                                    convertDataList[j] = Long.parseLong(String.valueOf(dataList[j]));
-                                }
-                                break;
                             case INTEGER:
-//                                Integer[] intDataList = new Integer[]{};
                                 for (int j = 0; j < dataList.length; j++) {
-                                    convertDataList[j] = Integer.parseInt(String.valueOf(dataList[j]));
+                                    if (StringUtils.isEmpty(dataList[j])) {
+                                        continue;
+                                    }
+                                    convertDataList.add(Long.parseLong(String.valueOf(dataList[j])));
                                 }
                                 break;
                             default:
-                                convertDataList = dataList;
+                                convertDataList.addAll(Collections.singleton(dataList));
                         }
 
                         if (!columnType.equals(ESFieldType.DATE)) {
