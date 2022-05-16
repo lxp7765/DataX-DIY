@@ -220,11 +220,8 @@ public class ESWriter extends Writer {
     public static class Task extends Writer.Task {
 
         private static final Logger log = LoggerFactory.getLogger(Job.class);
-
-        private Configuration conf;
-
-
         ESClient esClient = null;
+        private Configuration conf;
         private List<ESFieldType> typeList;
         private List<ESColumn> columnList;
 
@@ -321,7 +318,22 @@ public class ESWriter extends Writer {
                     ESFieldType columnType = typeList.get(i);
                     //如果是数组类型，那它传入的必是字符串类型
                     if (columnList.get(i).isArray() != null && columnList.get(i).isArray()) {
-                        String[] dataList = column.asString().split(splitter);
+                        Object[] dataList = column.asString().split(splitter);
+                        switch (columnType) {
+                            case LONG:
+                                Long[] longDataList = new Long[]{};
+                                for (int j = 0; j < dataList.length; j++) {
+                                    longDataList[j] = Long.parseLong(String.valueOf(dataList[j]));
+                                }
+                                break;
+                            case INTEGER:
+                                Integer[] intDataList = new Integer[]{};
+                                for (int j = 0; j < dataList.length; j++) {
+                                    intDataList[j] = Integer.parseInt(String.valueOf(dataList[j]));
+                                }
+                                break;
+                            default:
+                        }
                         if (!columnType.equals(ESFieldType.DATE)) {
                             data.put(columnName, dataList);
                         } else {
