@@ -324,12 +324,19 @@ public class ESWriter extends Writer {
                         ArrayList<Object> convertDataList = Lists.newArrayList();
                         switch (columnType) {
                             case LONG:
-                            case INTEGER:
                                 for (int j = 0; j < dataList.length; j++) {
                                     if (StringUtils.isEmpty(dataList[j])) {
                                         continue;
                                     }
                                     convertDataList.add(Long.parseLong(String.valueOf(dataList[j])));
+                                }
+                                break;
+                            case INTEGER:
+                                for (int j = 0; j < dataList.length; j++) {
+                                    if (StringUtils.isEmpty(dataList[j])) {
+                                        continue;
+                                    }
+                                    convertDataList.add(Integer.parseInt(String.valueOf(dataList[j])));
                                 }
                                 break;
                             default:
