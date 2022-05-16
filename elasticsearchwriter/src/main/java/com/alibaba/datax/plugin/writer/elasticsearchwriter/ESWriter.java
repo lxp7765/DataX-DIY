@@ -318,24 +318,27 @@ public class ESWriter extends Writer {
                     ESFieldType columnType = typeList.get(i);
                     //如果是数组类型，那它传入的必是字符串类型
                     if (columnList.get(i).isArray() != null && columnList.get(i).isArray()) {
-                        Object[] dataList = column.asString().split(splitter);
+                        String[] dataList = column.asString().split(splitter);
+                        Object[] convertDataList = new Object[dataList.length];
                         switch (columnType) {
                             case LONG:
-                                Long[] longDataList = new Long[]{};
+//                                Long[] longDataList = new Long[]{};
                                 for (int j = 0; j < dataList.length; j++) {
-                                    longDataList[j] = Long.parseLong(String.valueOf(dataList[j]));
+                                    convertDataList[j] = Long.parseLong(String.valueOf(dataList[j]));
                                 }
                                 break;
                             case INTEGER:
-                                Integer[] intDataList = new Integer[]{};
+//                                Integer[] intDataList = new Integer[]{};
                                 for (int j = 0; j < dataList.length; j++) {
-                                    intDataList[j] = Integer.parseInt(String.valueOf(dataList[j]));
+                                    convertDataList[j] = Integer.parseInt(String.valueOf(dataList[j]));
                                 }
                                 break;
                             default:
+                                convertDataList = dataList;
                         }
+
                         if (!columnType.equals(ESFieldType.DATE)) {
-                            data.put(columnName, dataList);
+                            data.put(columnName, convertDataList);
                         } else {
                             for (int pos = 0; pos < dataList.length; pos++) {
                                 dataList[pos] = getDateStr(columnList.get(i), column);
