@@ -340,7 +340,8 @@ public class ESWriter extends Writer {
                                 }
                                 break;
                             default:
-                                convertDataList.addAll(Collections.singleton(dataList));
+
+                                convertDataList.addAll(Lists.newArrayList(dataList));
                         }
 
                         if (!columnType.equals(ESFieldType.DATE)) {
