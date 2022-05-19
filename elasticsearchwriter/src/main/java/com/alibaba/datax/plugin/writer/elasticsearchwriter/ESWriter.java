@@ -324,8 +324,9 @@ public class ESWriter extends Writer {
                         String[] dataList = new String[oldDataList.length];
                         int n = 0;
                         for (int m = 0; m < oldDataList.length; m++) {
-                            if (StringUtils.isNotEmpty(oldDataList[m])) {
-                                dataList[n] = oldDataList[m];
+                            String itemText = oldDataList[m];
+                            if (StringUtils.isNotEmpty(itemText)) {
+                                dataList[n] = itemText;
                                 n++;
                             }
                         }
