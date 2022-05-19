@@ -322,31 +322,27 @@ public class ESWriter extends Writer {
                     if (columnList.get(i).isArray() != null && columnList.get(i).isArray()) {
                         String[] oldDataList = column.asString().split(splitter);
                         String[] dataList = new String[oldDataList.length];
+                        int n = 0;
                         for (int m = 0; m < oldDataList.length; m++) {
                             if (StringUtils.isNotEmpty(oldDataList[m])) {
-                                dataList[dataList.length] = oldDataList[m];
+                                dataList[n] = oldDataList[m];
+                                n++;
                             }
                         }
                         Object[] convertDataList = new Object[dataList.length];
                         switch (columnType) {
                             case LONG:
                                 for (int j = 0; j < dataList.length; j++) {
-                                    if (StringUtils.isEmpty(dataList[j])) {
-                                        continue;
-                                    }
-                                    convertDataList[convertDataList.length] = Long.parseLong(String.valueOf(dataList[j]));
+                                    convertDataList[j] = Long.parseLong(String.valueOf(dataList[j]));
                                 }
                                 break;
                             case INTEGER:
                                 for (int j = 0; j < dataList.length; j++) {
-                                    if (StringUtils.isEmpty(dataList[j])) {
-                                        continue;
-                                    }
-                                    convertDataList[convertDataList.length] = Integer.parseInt(String.valueOf(dataList[j]));
+
+                                    convertDataList[j] = Integer.parseInt(String.valueOf(dataList[j]));
                                 }
                                 break;
                             default:
-
                                 convertDataList = dataList;
                         }
 
