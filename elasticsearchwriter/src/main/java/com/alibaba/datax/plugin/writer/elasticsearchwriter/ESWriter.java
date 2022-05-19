@@ -320,15 +320,21 @@ public class ESWriter extends Writer {
                     ESFieldType columnType = typeList.get(i);
                     //如果是数组类型，那它传入的必是字符串类型
                     if (columnList.get(i).isArray() != null && columnList.get(i).isArray()) {
-                        String[] dataList = column.asString().split(splitter);
-                        ArrayList<Object> convertDataList = Lists.newArrayList();
+                        String[] oldDataList = column.asString().split(splitter);
+                        String[] dataList = new String[oldDataList.length];
+                        for (int m = 0; m < oldDataList.length; m++) {
+                            if (StringUtils.isNotEmpty(oldDataList[m])) {
+                                dataList[dataList.length] = oldDataList[m];
+                            }
+                        }
+                        Object[] convertDataList = new Object[dataList.length];
                         switch (columnType) {
                             case LONG:
                                 for (int j = 0; j < dataList.length; j++) {
                                     if (StringUtils.isEmpty(dataList[j])) {
                                         continue;
                                     }
-                                    convertDataList.add(Long.parseLong(String.valueOf(dataList[j])));
+                                    convertDataList[convertDataList.length] = Long.parseLong(String.valueOf(dataList[j]));
                                 }
                                 break;
                             case INTEGER:
@@ -336,12 +342,12 @@ public class ESWriter extends Writer {
                                     if (StringUtils.isEmpty(dataList[j])) {
                                         continue;
                                     }
-                                    convertDataList.add(Integer.parseInt(String.valueOf(dataList[j])));
+                                    convertDataList[convertDataList.length] = Integer.parseInt(String.valueOf(dataList[j]));
                                 }
                                 break;
                             default:
 
-                                convertDataList.addAll(Lists.newArrayList(dataList));
+                                convertDataList = dataList;
                         }
 
                         if (!columnType.equals(ESFieldType.DATE)) {
