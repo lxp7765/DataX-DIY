@@ -348,7 +348,12 @@ public class ESWriter extends Writer {
                         }
 
                         if (!columnType.equals(ESFieldType.DATE)) {
-                            data.put(columnName, convertDataList);
+                            if (n == 0) {
+                                data.put(columnName, null);
+                            } else {
+                                data.put(columnName, convertDataList);
+
+                            }
                         } else {
                             for (int pos = 0; pos < dataList.length; pos++) {
                                 dataList[pos] = getDateStr(columnList.get(i), column);
