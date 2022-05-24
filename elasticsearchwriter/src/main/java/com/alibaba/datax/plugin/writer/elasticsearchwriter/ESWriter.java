@@ -110,6 +110,7 @@ public class ESWriter extends Writer {
                     columnItem.setName(colName);
                     columnItem.setType(colTypeStr);
 
+
                     if (colType == ESFieldType.ID) {
                         columnList.add(columnItem);
                         // 如果是id,则properties为空
@@ -120,6 +121,11 @@ public class ESWriter extends Writer {
                     if (array != null) {
                         columnItem.setArray(array);
                     }
+                    Boolean emptyToNull = jo.getBoolean("emptyToNull");
+                    if (emptyToNull != null) {
+                        columnItem.setEmptyToNull(emptyToNull);
+                    }
+
                     Map<String, Object> field = new HashMap<String, Object>();
                     field.put("type", colTypeStr);
                     //https://www.elastic.co/guide/en/elasticsearch/reference/5.2/breaking_50_mapping_changes.html#_literal_index_literal_property
