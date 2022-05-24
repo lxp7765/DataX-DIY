@@ -378,7 +378,7 @@ public class ESWriter extends Writer {
                                 }
                                 break;
                             case KEYWORD:
-                                if (columnList.get(i).getEmptyToNull() && StringUtils.isEmpty(column.asString())) {
+                                if (columnList.get(i).getEmptyToNull() !=null && columnList.get(i).getEmptyToNull() && StringUtils.isEmpty(column.asString())) {
                                     data.put(columnName, null);
                                     break;
                                 }
