@@ -65,7 +65,7 @@ public class ESColumn {
         this.array = array;
     }
 
-    public Boolean getEmptyToNull() {
+    public Boolean isEmptyToNull() {
         return emptyToNull;
     }
 
