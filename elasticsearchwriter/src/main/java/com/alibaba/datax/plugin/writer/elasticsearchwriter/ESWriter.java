@@ -378,6 +378,10 @@ public class ESWriter extends Writer {
                                 }
                                 break;
                             case KEYWORD:
+                                if (columnList.get(i).getEmptyToNull() && StringUtils.isEmpty(column.asString())) {
+                                    data.put(columnName, null);
+                                    break;
+                                }
                             case STRING:
                             case TEXT:
                             case IP:
