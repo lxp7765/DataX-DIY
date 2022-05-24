@@ -105,14 +105,12 @@ coverage.xml
 .pytest_cache/
 *.mo
 *.pot
-*.log
 local_settings.py
 db.sqlite3
 instance/
 .webassets-cache
 .scrapy
 docs/_build/
-target/
 .ipynb_checkpoints
 .python-version
 celerybeat-schedule
@@ -155,3 +153,4 @@ local.properties
 .cache-main
 .scala_dependencies
 .worksheet
+*.ipr
