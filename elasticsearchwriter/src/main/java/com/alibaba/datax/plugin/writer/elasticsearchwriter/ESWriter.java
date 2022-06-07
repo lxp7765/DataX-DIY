@@ -304,10 +304,10 @@ public class ESWriter extends Writer {
             }
             if (column.getType() != Column.Type.DATE && esColumn.getFormat() != null) {
                 DateTimeFormatter formatter = DateTimeFormat.forPattern(esColumn.getFormat());
-                date = formatter.withZone(dtz).parseDateTime(column.asString());
+                date = formatter.parseDateTime(column.asString());
                 return date.toString();
             } else if (column.getType() == Column.Type.DATE) {
-                date = new DateTime(column.asLong(), dtz);
+                date = new DateTime(column.asLong());
                 return date.toString();
             } else {
                 return column.asString();
@@ -388,12 +388,12 @@ public class ESWriter extends Writer {
                                 }
                                 break;
                             case KEYWORD:
+                            case STRING:
+                            case TEXT:
                                 if (columnList.get(i).isEmptyToNull() != null && columnList.get(i).isEmptyToNull() && StringUtils.isEmpty(column.asString())) {
                                     data.put(columnName, null);
                                     break;
                                 }
-                            case STRING:
-                            case TEXT:
                             case IP:
                             case GEO_POINT:
                                 data.put(columnName, column.asString());
